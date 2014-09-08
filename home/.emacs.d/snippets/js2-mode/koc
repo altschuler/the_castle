@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name: koc
+#key: koc
+# --
+ko.computed(function () {
+    $0
+})

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name: reqmod
+#key: reqmod
+# --
+define([
+    '${1:dep}'
+], function ($2) {
+    $0
+});

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+#name: basec
+#key: basec
+# --
+var ${1:name} = ${2:Base}.extend({
+    constructor: function ($3) {
+        var self = this;
+        $0
+    }
+});
+
+return $1;
