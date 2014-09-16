@@ -95,6 +95,7 @@
 ;; for c/c++
 (global-set-key (kbd "M-RET") 'ac-complete-clang)
 (global-set-key (kbd "C-M-RET") 'ac-complete-gtags)
+(global-set-key (kbd "C-x C-o") 'ff-find-other-file)
 (add-hook 'c++-mode-hook (lambda () (local-set-key (kbd "C-c C-c") 'compile)))
 
 (require 'kite-mode)
