@@ -19,6 +19,7 @@ source ~/.zsh/paths.zsh
 source ~/.zsh/lib/git.zsh
 source ~/.zsh/lib/theme.zsh
 source ~/.zsh/lib/completions.zsh
+source ~/.zsh/lib/history.zsh
 
 # usability
 source ~/.zsh/aliases.zsh
