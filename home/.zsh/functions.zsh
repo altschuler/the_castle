@@ -6,8 +6,10 @@ mdir () {
 # (dis)connect a monitor
 sc () {
     local id=`xrandr | awk '$2 == "connected" && $1 != "eDP1" { print $1 }'`
-
-    if [[ $1 == "off" ]]
+    if [[ -z $id ]]
+    then
+        echo "No monitors found"
+    elif [[ $1 == "off" ]]
     then
         echo "Disconnecting $id"
 
