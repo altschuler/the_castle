@@ -18,3 +18,8 @@ alias p='evince'
 alias startmysql="sudo /usr/bin/mysqld_safe --datadir=/var/lib/mysql"
 alias rld='source ~/.zshrc'
 alias e="exit"
+alias pk="pkill"
+
+# connect to a wifi network
+alias q="sudo ip link set wlp2s0 down &&\
+  sudo netctl start"
