@@ -81,7 +81,7 @@
 
 (add-hook 'web-mode-hook (lambda () (emmet-mode t)))
 
-(require 'llvm-mode)
+;(require 'llvm-mode)
 
 ;; (add-to-list 'load-path "/share/emacs/site-lisp/sage-mode")
 ;; (require 'sage "sage")
@@ -152,6 +152,9 @@
 (require 'auto-complete-config)
 (ac-config-default)
 (global-auto-complete-mode t)
+
+;; LISP
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . paredit-mode))
 
 ;; Emacs flavor
 (delete-selection-mode t)
