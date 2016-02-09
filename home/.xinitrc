@@ -4,8 +4,10 @@ exec i3
 xset r rate 200 25
 
 # disable beep
-rmmod pcspkr
+sudo rmmod pcspkr
 
 pulseaudio --start
+
+sh ~/kbon.sh
 
 # eval $(gpg-agent --daemon)

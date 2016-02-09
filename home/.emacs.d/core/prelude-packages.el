@@ -35,19 +35,20 @@
 (require 'cl)
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 ;; set package-user-dir to be relative to Prelude install path
 (setq package-user-dir (expand-file-name "elpa" prelude-dir))
 (package-initialize)
 
 (defvar prelude-packages
-  '(ace-jump-mode ack-and-a-half dash diminish elisp-slime-nav
-    expand-region flx-ido flycheck gist
-    git-commit-mode gitconfig-mode gitignore-mode grizzl
+  '(ace-jump-mode dash diminish elisp-slime-nav
+    expand-region flx-ido flycheck gist gitconfig-mode gitignore-mode grizzl
     guru-mode helm helm-projectile ido-ubiquitous
     key-chord magit rainbow-mode
     smartparens smex undo-tree
-    volatile-highlights zenburn-theme)
+    volatile-highlights zenburn-theme
+
+    yasnippet auto-complete-clang js2-mode js2-refactor erc-image emmet-mode)
   "A list of packages to ensure are installed at launch.")
 
 (defun prelude-packages-installed-p ()
@@ -82,10 +83,10 @@ Missing packages are installed automatically."
   "When file with EXTENSION is opened triggers auto-install of PACKAGE.
 PACKAGE is installed only if not already present.  The file is opened in MODE."
   `(add-to-list 'auto-mode-alist
-                `(,extension . (lambda ()
-                                 (unless (package-installed-p ',package)
-                                   (package-install ',package))
-                                 (,mode)))))
+		`(,extension . (lambda ()
+				 (unless (package-installed-p ',package)
+				   (package-install ',package))
+				 (,mode)))))
 
 (defvar prelude-auto-install-alist
   '(("\\.clj\\'" clojure-mode clojure-mode)
@@ -128,8 +129,8 @@ PACKAGE is installed only if not already present.  The file is opened in MODE."
 (mapc
  (lambda (entry)
    (let ((extension (car entry))
-         (package (cadr entry))
-         (mode (cadr (cdr entry))))
+	 (package (cadr entry))
+	 (mode (cadr (cdr entry))))
      (unless (package-installed-p package)
        (prelude-auto-install extension package mode))))
  prelude-auto-install-alist)

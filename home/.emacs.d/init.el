@@ -32,11 +32,6 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
-(defvar current-user
-      (getenv
-       (if (equal system-type 'windows-nt) "USERNAME" "USER")))
-
-(message "Prelude is powering up... Be patient, Master %s!" current-user)
 
 (defvar prelude-dir (file-name-directory load-file-name)
   "The root dir of the Emacs Prelude distribution.")
@@ -88,28 +83,44 @@ by Prelude.")
 (require 'prelude-global-keybindings)
 
 ;; OSX specific settings
-(when (eq system-type 'darwin)
-  (require 'prelude-osx))
+;; (when (eq system-type 'darwin)
+;;   (require 'prelude-osx))
 
 ;; the modules
 (when (file-exists-p prelude-modules-file)
   (load prelude-modules-file))
 
 ;; config changes made through the customize UI will be store here
-(setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
+;(setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
 
 ;; load the personal settings (this includes `custom-file')
 (when (file-exists-p prelude-personal-dir)
   (message "Loading personal configuration files in %s..." prelude-personal-dir)
   (mapc 'load (directory-files prelude-personal-dir 't "^[^#].*el$")))
 
-(message "Prelude is ready to do thy bidding, Master %s!" current-user)
 
-(prelude-eval-after-init
- ;; greet the use with some useful tip
- (run-at-time 5 nil 'prelude-tip-of-the-day))
+;; (prelude-eval-after-init
+;;  ;; greet the use with some useful tip
+;;  (run-at-time 5 nil 'prelude-tip-of-the-day))
 
-
+(message "Godspeed")
 
 ;;; init.el ends here
 (put 'set-goal-column 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(haskell-tags-on-save t)
+ '(org-agenda-files (quote ("~/org/energy.org" "~/org/todo.org")))
+ '(safe-local-variable-values
+   (quote
+    ((company-clang-arguments "-I~/school/bachelor/mini")
+     (company-clang-arguments "-I/home/simon/dev/c-demo-project/include1/" "-I/home/simon/dev/c-demo-project/include2/")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

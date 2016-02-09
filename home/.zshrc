@@ -1,5 +1,7 @@
 # env vars
 EDITOR="emacs"
+GTAGSCONF="$HOME/.globalrc"
+GTAGSLABEL="ctags"
 
 # path setup
 paths=(
@@ -11,7 +13,11 @@ paths=(
     /bin
     /home/simon/.cabal/bin
     /opt/android-sdk/tools
-    /home/simon/.gem/ruby/2.1.0/bin
+    /home/simon/.gem/ruby/2.2.0/bin
+    /usr/local/heroku/bin
+    /home/simon/dev/calc/bin
+    /home/simon/.local/bin
+    /home/simon/opt/android-sdk-linux/tools
 )
 source ~/.zsh/paths.zsh
 

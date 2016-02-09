@@ -19,6 +19,8 @@ alias startmysql="sudo /usr/bin/mysqld_safe --datadir=/var/lib/mysql"
 alias rld='source ~/.zshrc'
 alias e="exit"
 alias pk="pkill"
+alias rk="sudo rfkill unblock all"
+alias semplan="libreoffice school/hit/generelt/semesterplan_f16.xlsx"
 
 # connect to a wifi network
 alias q="sudo ip link set wlp2s0 down &&\

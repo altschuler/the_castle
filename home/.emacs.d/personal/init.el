@@ -23,98 +23,83 @@
 (global-set-key (kbd "M-s-f")     '(lambda () (interactive) (shrink-window-horizontally -1)))
 (global-set-key (kbd "M-s-b")     '(lambda () (interactive) (shrink-window-horizontally 1)))
 
-(global-set-key (kbd "C-x d") 'diredp-dired-files)
-
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
-(set-face-attribute 'region nil :background "#00CC1F")
+(set-face-attribute 'region nil :background "#0034CC")
 
-;; Haskell
-(setenv "PATH" (concat "~/.cabal/bin:" (getenv "PATH")))
-(add-to-list 'exec-path "~/.cabal/bin")
-(custom-set-variables '(haskell-tags-on-save t))
-(add-hook 'haskell-mode-hook
-          (lambda () (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-jump-to-def-or-tag)))
+;;; Mode specifics
 
-;; yasnippet
-(require 'yasnippet) ;; not yasnippet-bundle
-(yas-global-mode 1)
-(global-set-key (kbd "C-<tab>") 'yas-expand)
-; unset tab completion
-(define-key yas-minor-mode-map [(tab)] nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
+;(load-file "~/.emacs.d/personal/company.el")
+(load-file "~/.emacs.d/personal/auto-complete.el")
 
-;; scss
-(setq scss-compile-at-save nil)
-(add-hook 'scss-mode-hook 'smartparens-mode)
-(add-hook 'scss-mode-hook 'auto-complete-mode)
+(load-file "~/.emacs.d/personal/rust.el")
+(load-file "~/.emacs.d/personal/helm.el")
+(load-file "~/.emacs.d/personal/ggtags.el")
+(load-file "~/.emacs.d/personal/c.el")
+(load-file "~/.emacs.d/personal/ruby.el")
+;(load-file "~/.emacs.d/personal/yasnippet.el")
+(load-file "~/.emacs.d/personal/haskell.el")
+(load-file "~/.emacs.d/personal/scss.el")
+(load-file "~/.emacs.d/personal/tex.el")
+(load-file "~/.emacs.d/personal/dired.el")
+(load-file "~/.emacs.d/personal/erc.el")
+(load-file "~/.emacs.d/personal/flycheck.el")
+(load-file "~/.emacs.d/personal/python.el")
+(load-file "~/.emacs.d/personal/csharp.el")
+(load-file "~/.emacs.d/personal/eshell.el")
+(load-file "~/.emacs.d/personal/go.el")
+(load-file "~/.emacs.d/personal/setup-org-mode.el")
 
-;; C/C++ dev
-(require 'auto-complete-clang)
-;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-complete-clang)
+(require 'setup-org-mode)
 
-;(require 'member-function)
-;(setq mf--source-file-extension "cpp")
+(setenv "PATH" (concat (getenv "PATH") ":/home/simon/.local/bin"))
+(setq exec-path (append exec-path '("/home/simon/.local/bin")))
+(load-file "~/dev/stack-ide/stack-mode/fifo.el")
+(load-file "~/dev/stack-ide/stack-mode/stack-mode.el")
+
+
+;; Common
+
+(setq-default c-basic-offset 4)
+(setq sgml-basic-offset 4)
+
+;; Doxy
+;; (require 'doxymacs)
+;; (add-hook 'c-mode-common-hook 'doxymacs-mode)
+;; (defun my-doxymacs-font-lock-hook ()
+;;   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+;;       (doxymacs-font-lock)))
+;; (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+
+;; Emacs flavor
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (auto-fill-mode -1)
 
-;; tex
-(defun latex-startup ()
-  (turn-on-reftex)
-  (auto-fill-mode -1))
-
-(add-hook 'LaTeX-mode-hook 'latex-startup)   ; with AUCTeX LaTeX mode
-(add-hook 'latex-mode-hook 'latex-startup)   ; with Emacs latex mode
-
-(remove-hook 'text-mode-hook #'turn-on-auto-fill)
-(remove-hook 'latex-mode-hook 'turn-on-auto-fill)
-(remove-hook 'LaTex-mode-hook 'turn-on-auto-fill)
-
-;; (set-frame-font "SourceCodePro-11")
-(set-frame-font "Consolas")
-
-(add-to-list 'load-path "~/.emacs.d/vendor/kite-mode")
-
+;;(set-frame-font "Consolas")
+(set-frame-font "SourceCodePro-11")
 (set-mouse-color "dark orange")
 
-(setq dired-listing-switches "-alh")
+(delete-selection-mode t)
+(show-paren-mode t)
+(setq make-backup-files nil)
+(setq message-kill-buffer-on-exit t)
+(scroll-bar-mode 0)
+(global-hl-line-mode -1)
+(setq sp-autoescape-string-quote nil)
+
 
 (add-hook 'web-mode-hook (lambda () (emmet-mode t)))
-
-;(require 'llvm-mode)
-
-;; (add-to-list 'load-path "/share/emacs/site-lisp/sage-mode")
-;; (require 'sage "sage")
-;; (setq sage-command "sage")
-
-;; (add-hook 'sage-startup-after-prompt-hook
-;;           (lambda () (interactive)
-;;             (sage-view 1)
-;;             (sage-view-disable-inline-output)))
-
-;; for c/c++
-(global-set-key (kbd "M-RET") 'ac-complete-clang)
-(global-set-key (kbd "C-M-RET") 'ac-complete-gtags)
-(global-set-key (kbd "C-x C-o") 'ff-find-other-file)
-(add-hook 'c++-mode-hook (lambda () (local-set-key (kbd "C-c C-c") 'compile)))
-
-(require 'kite-mode)
 
 ;; js2-mode
 (add-hook 'js2-mode
           (lambda()
             (setq mode-name "js2")))
 
-;; cider
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-(require 'tramp)
+;(require 'tramp)
 
 ;; projectile
 (require 'projectile)
 (setq projectile-keymap-prefix (kbd "C-c C-p"))
-
-(global-set-key (kbd "C-x M-w") 'wrap-text)
 
 ;; js2 stuff
 (require 'js2-refactor)
@@ -125,21 +110,11 @@
 
 ;; tern
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)))
-
-;; erc setup
-(require 'erc-dcc)
-(require 'erc-image)
-(add-to-list 'erc-modules 'image)
-(erc-update-modules)
-(setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
 ;; fsharp
 (setq inferior-fsharp-program "fsharpi --readline-")
 (setq fsharp-compiler "fsharpc")
+
 
 ;; Emmet
 (require 'emmet-mode)
@@ -147,29 +122,25 @@
 (add-hook 'html-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook  'emmet-mode)
 
-;; Auto Complete
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
+;; TypeScript
+(require 'typescript)
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(setq typescript-indent-level 4)
+
+;; (require 'tss)
+
+;; (setq tss-popup-help-key "C-:")
+;; (setq tss-jump-to-definition-key "M-.")
+;; (setq tss-implement-definition-key "C-c i")
+
+;; (tss-config-default)
 
 ;; LISP
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . paredit-mode))
-
-;; Emacs flavor
-(delete-selection-mode t)
-(show-paren-mode t)
-; do not make backup files
-(setq make-backup-files nil)
-; don't keep message buffers around
-(setq message-kill-buffer-on-exit t)
-; no scrollbars
-(scroll-bar-mode 0)
-(global-hl-line-mode -1)
-(setq sp-autoescape-string-quote nil)
 
 ;; mode hooks
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.ko\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.kite\\'" . kite-mode))
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . paredit-mode))
+(add-to-list 'auto-mode-alist '("\\.amb\\'" . hexl-mode))
+;(add-to-list 'auto-mode-alist '("\\.el\\'" . paredit-mode))

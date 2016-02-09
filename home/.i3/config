@@ -12,6 +12,10 @@
 set $mod Mod4
 set $modAlt Mod1
 
+# predefined workspaces for some clients
+assign [class="Spotify"] 9
+assign [class="Thunderbird"] 5
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -21,14 +25,20 @@ new_window pixel 2
 
 client.focused          #000000 #00AA00 #000000 #FF0000
 
-# dmenu
-bindsym $mod+o exec dmenu_run
+hide_edge_borders both
 
 # auto jump back to previous workspace
 workspace_auto_back_and_forth yes
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
+# dmenu
+bindsym $mod+o exec dmenu_run
+
+# tab through workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # start a terminal
 bindsym $mod+Return exec urxvt
@@ -43,9 +53,9 @@ bindsym $mod+Shift+Ctrl+b move workspace to output left
 bindsym $mod+Shift+Ctrl+f move workspace to output right
 
 # audio keys
-bindsym XF86AudioRaiseVolume exec amixer set Master 5%+ && killall -USR1 i3blocks
-bindsym XF86AudioLowerVolume exec amixer set Master 5%- && killall -USR1 i3blocks
-bindsym XF86AudioMute exec amixer set Master toggle && killall -USR1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -c 1 set Master 5%+ && killall -USR1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -c 1 set Master 5%- && killall -USR1 i3blocks
+bindsym XF86AudioMute exec amixer -c 1 set Master 0% && killall -USR1 i3blocks
 
 # brightness
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
@@ -126,10 +136,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        bindsym b resize shrink width 10 px or 10 ppt
-        bindsym n resize grow height 10 px or 10 ppt
-        bindsym p resize shrink height 10 px or 10 ppt
-        bindsym f resize grow width 10 px or 10 ppt
+        bindsym b resize shrink width 10 px or 5 ppt
+        bindsym n resize grow height 10 px or 5 ppt
+        bindsym p resize shrink height 10 px or 5 ppt
+        bindsym f resize grow width 10 px or 5 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"

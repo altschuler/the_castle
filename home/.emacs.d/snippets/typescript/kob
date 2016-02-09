@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+#name: !kob
+#key: !kob
+# --
+KnockoutObservable<$0>
