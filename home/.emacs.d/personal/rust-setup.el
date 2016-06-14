@@ -1,9 +1,7 @@
 (setq racer-rust-src-path "~/dev/rust/src/")
 (setq racer-cmd "~/dev/racer/target/release/racer")
-(add-to-list 'load-path "~/dev/racer/editors/emacs")
 
 (add-hook 'rust-mode-hook #'racer-mode)
-
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)
 

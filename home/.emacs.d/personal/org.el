@@ -26,5 +26,3 @@
           (lambda ()
             (local-set-key (kbd "C-M-f") 'org-shiftright)
             (local-set-key (kbd "C-M-b") 'org-shiftleft)))
-
-(provide 'setup-org-mode)

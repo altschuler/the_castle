@@ -18,6 +18,8 @@ paths=(
     /home/simon/dev/calc/bin
     /home/simon/.local/bin
     /home/simon/opt/android-sdk-linux/tools
+    /home/simon/apps/webstorm/bin
+    /home/simon/.cargo/bin
 )
 source ~/.zsh/paths.zsh
 

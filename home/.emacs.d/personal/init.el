@@ -32,31 +32,27 @@
 ;(load-file "~/.emacs.d/personal/company.el")
 (load-file "~/.emacs.d/personal/auto-complete.el")
 
-(load-file "~/.emacs.d/personal/rust.el")
+(load-file "~/.emacs.d/personal/rust-setup.el")
 (load-file "~/.emacs.d/personal/helm.el")
 (load-file "~/.emacs.d/personal/ggtags.el")
 (load-file "~/.emacs.d/personal/c.el")
-(load-file "~/.emacs.d/personal/ruby.el")
+;(load-file "~/.emacs.d/personal/ruby.el")
 ;(load-file "~/.emacs.d/personal/yasnippet.el")
 (load-file "~/.emacs.d/personal/haskell.el")
 (load-file "~/.emacs.d/personal/scss.el")
 (load-file "~/.emacs.d/personal/tex.el")
 (load-file "~/.emacs.d/personal/dired.el")
-(load-file "~/.emacs.d/personal/erc.el")
+;(load-file "~/.emacs.d/personal/erc.el")
 (load-file "~/.emacs.d/personal/flycheck.el")
-(load-file "~/.emacs.d/personal/python.el")
-(load-file "~/.emacs.d/personal/csharp.el")
+;(load-file "~/.emacs.d/personal/python.el")
+;(load-file "~/.emacs.d/personal/csharp.el")
 (load-file "~/.emacs.d/personal/eshell.el")
-(load-file "~/.emacs.d/personal/go.el")
-(load-file "~/.emacs.d/personal/setup-org-mode.el")
-
-(require 'setup-org-mode)
+;(load-file "~/.emacs.d/personal/go.el")
+(load-file "~/.emacs.d/personal/org.el")
+;(load-file "~/.emacs.d/personal/stack.el")
 
 (setenv "PATH" (concat (getenv "PATH") ":/home/simon/.local/bin"))
 (setq exec-path (append exec-path '("/home/simon/.local/bin")))
-(load-file "~/dev/stack-ide/stack-mode/fifo.el")
-(load-file "~/dev/stack-ide/stack-mode/stack-mode.el")
-
 
 ;; Common
 
@@ -126,6 +122,23 @@
 (require 'typescript)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (setq typescript-indent-level 4)
+
+;; sample config
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (tide-setup)
+            (flycheck-mode +1)
+            (setq flycheck-check-syntax-automatically '(save mode-enabled))
+            (eldoc-mode +1)
+            ;; company is an optional dependency. You have to
+            ;; install it separately via package-install
+            (company-mode-on)))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
 
 ;; (require 'tss)
 
