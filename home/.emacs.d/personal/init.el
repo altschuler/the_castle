@@ -23,51 +23,17 @@
 (global-set-key (kbd "M-s-f")     '(lambda () (interactive) (shrink-window-horizontally -1)))
 (global-set-key (kbd "M-s-b")     '(lambda () (interactive) (shrink-window-horizontally 1)))
 
-(add-to-list 'load-path "~/.emacs.d/vendor")
-
-(set-face-attribute 'region nil :background "#0034CC")
-
-;;; Mode specifics
-
-;(load-file "~/.emacs.d/personal/company.el")
-(load-file "~/.emacs.d/personal/auto-complete.el")
-
-(load-file "~/.emacs.d/personal/rust-setup.el")
-(load-file "~/.emacs.d/personal/helm.el")
-(load-file "~/.emacs.d/personal/ggtags.el")
-(load-file "~/.emacs.d/personal/c.el")
-;(load-file "~/.emacs.d/personal/ruby.el")
-;(load-file "~/.emacs.d/personal/yasnippet.el")
-(load-file "~/.emacs.d/personal/haskell.el")
-(load-file "~/.emacs.d/personal/scss.el")
-(load-file "~/.emacs.d/personal/tex.el")
-(load-file "~/.emacs.d/personal/dired.el")
-;(load-file "~/.emacs.d/personal/erc.el")
-(load-file "~/.emacs.d/personal/flycheck.el")
-;(load-file "~/.emacs.d/personal/python.el")
-;(load-file "~/.emacs.d/personal/csharp.el")
-(load-file "~/.emacs.d/personal/eshell.el")
-;(load-file "~/.emacs.d/personal/go.el")
-(load-file "~/.emacs.d/personal/org.el")
-;(load-file "~/.emacs.d/personal/stack.el")
+;; Config
 
 (setenv "PATH" (concat (getenv "PATH") ":/home/simon/.local/bin"))
 (setq exec-path (append exec-path '("/home/simon/.local/bin")))
 
-;; Common
+;; Emacs flavor
 
+(set-face-attribute 'region nil :background "#0034CC")
 (setq-default c-basic-offset 4)
 (setq sgml-basic-offset 4)
 
-;; Doxy
-;; (require 'doxymacs)
-;; (add-hook 'c-mode-common-hook 'doxymacs-mode)
-;; (defun my-doxymacs-font-lock-hook ()
-;;   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-;;       (doxymacs-font-lock)))
-;; (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-
-;; Emacs flavor
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (auto-fill-mode -1)
 
@@ -83,71 +49,42 @@
 (global-hl-line-mode -1)
 (setq sp-autoescape-string-quote nil)
 
+;; Mode specifics
 
-(add-hook 'web-mode-hook (lambda () (emmet-mode t)))
+(add-to-list 'load-path "~/.emacs.d/vendor")
 
-;; js2-mode
-(add-hook 'js2-mode
-          (lambda()
-            (setq mode-name "js2")))
-
-;(require 'tramp)
+(load-file "~/.emacs.d/personal/company.el")
+;(load-file "~/.emacs.d/personal/auto-complete.el")
+(load-file "~/.emacs.d/personal/neotree.el")
+(load-file "~/.emacs.d/personal/rust-setup.el")
+(load-file "~/.emacs.d/personal/helm.el")
+(load-file "~/.emacs.d/personal/ggtags.el")
+(load-file "~/.emacs.d/personal/c.el")
+;;(load-file "~/.emacs.d/personal/ruby.el")
+;;(load-file "~/.emacs.d/personal/yasnippet.el")
+(load-file "~/.emacs.d/personal/haskell.el")
+(load-file "~/.emacs.d/personal/scss.el")
+(load-file "~/.emacs.d/personal/tex.el")
+(load-file "~/.emacs.d/personal/dired.el")
+;;(load-file "~/.emacs.d/personal/erc.el")
+(load-file "~/.emacs.d/personal/flycheck.el")
+(load-file "~/.emacs.d/personal/python.el")
+;;(load-file "~/.emacs.d/personal/csharp.el")
+(load-file "~/.emacs.d/personal/eshell.el")
+;;(load-file "~/.emacs.d/personal/go.el")
+(load-file "~/.emacs.d/personal/org.el")
+(load-file "~/.emacs.d/personal/typescript.el")
+;;(load-file "~/.emacs.d/personal/stack.el")
+(load-file "~/.emacs.d/personal/js2.el")
+(load-file "~/.emacs.d/personal/emmet.el")
+(load-file "~/.emacs.d/personal/fsharp.el")
 
 ;; projectile
 (require 'projectile)
 (setq projectile-keymap-prefix (kbd "C-c C-p"))
 
-;; js2 stuff
-(require 'js2-refactor)
-(js2r-add-keybindings-with-prefix "C-c C-j")
-
-(require 'js2-imenu-extras)
-(js2-imenu-extras-setup)
-
-;; tern
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-
-;; fsharp
-(setq inferior-fsharp-program "fsharpi --readline-")
-(setq fsharp-compiler "fsharpc")
-
-
-;; Emmet
-(require 'emmet-mode)
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'html-mode-hook 'emmet-mode)
-(add-hook 'css-mode-hook  'emmet-mode)
-
-;; TypeScript
-(require 'typescript)
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(setq typescript-indent-level 4)
-
-;; sample config
-(add-hook 'typescript-mode-hook
-          (lambda ()
-            (tide-setup)
-            (flycheck-mode +1)
-            (setq flycheck-check-syntax-automatically '(save mode-enabled))
-            (eldoc-mode +1)
-            ;; company is an optional dependency. You have to
-            ;; install it separately via package-install
-            (company-mode-on)))
-
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-
 ;; formats the buffer before saving
 (add-hook 'before-save-hook 'tide-format-before-save)
-
-;; (require 'tss)
-
-;; (setq tss-popup-help-key "C-:")
-;; (setq tss-jump-to-definition-key "M-.")
-;; (setq tss-implement-definition-key "C-c i")
-
-;; (tss-config-default)
-
 ;; LISP
 
 ;; mode hooks

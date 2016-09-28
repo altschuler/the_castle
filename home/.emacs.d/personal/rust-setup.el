@@ -10,7 +10,7 @@
 
 (add-hook 'rust-mode-hook
           '(lambda ()
-             (racer-activate)
+             (racer-mode)
              (local-set-key (kbd "C-c C-c") 'cargo-process-run)
              (local-set-key (kbd "C-c C-t") 'cargo-process-test)
              (local-set-key (kbd "C-c C-b") 'cargo-process-build)))

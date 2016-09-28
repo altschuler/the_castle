@@ -33,6 +33,13 @@
 
 ;;; Code:
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defvar prelude-dir (file-name-directory load-file-name)
   "The root dir of the Emacs Prelude distribution.")
 (defvar prelude-core-dir (expand-file-name "core" prelude-dir)
@@ -96,7 +103,9 @@ by Prelude.")
 ;; load the personal settings (this includes `custom-file')
 (when (file-exists-p prelude-personal-dir)
   (message "Loading personal configuration files in %s..." prelude-personal-dir)
-  (mapc 'load (directory-files prelude-personal-dir 't "^[^#].*el$")))
+  (load (concat prelude-personal-dir "/init.el"))
+  ;; (mapc 'load (directory-files prelude-personal-dir 't "^[^#].*el$"))
+  )
 
 
 ;; (prelude-eval-after-init
@@ -112,8 +121,14 @@ by Prelude.")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(android-mode-sdk-dir "~/opt/android-sdk-linux")
  '(haskell-tags-on-save t)
+ '(jedi:environment-virtualenv nil)
+ '(neo-window-width 30)
  '(org-agenda-files (quote ("~/org/energy.org" "~/org/todo.org")))
+ '(package-selected-packages
+   (quote
+    (editorconfig zenburn-theme volatile-highlights undo-tree tss toml-mode tide tern-django tern-auto-complete sws-mode smex smartparens scss-mode scala-mode2 rudel robe restclient rainbow-mode python-environment pony-mode pkgbuild-mode paredit omnisharp neotree markdown-mode+ magit less-css-mode key-chord jsx-mode js2-refactor jade-mode ido-ubiquitous icicles helm-themes helm-swoop helm-spotify helm-projectile-all helm-projectile helm-make helm-gtags helm-company helm-anything helm-ag haskell-mode handlebars-mode guru-mode grizzl gotest golint go-snippets go-autocomplete gitignore-mode gitconfig-mode gist ggtags function-args fsharp-mode flymake-rust flycheck-rust flycheck-hdevtools flx-ido expand-region ess erc-image epc emmet-mode elisp-slime-nav dired-filter dired-details+ dired+ diminish d-mode csv-mode company-c-headers clojure-snippets clojure-mode-extra-font-locking cargo bookmark+ bison-mode auto-complete-rst auto-complete-clang auctex-latexmk android-mode ace-jump-mode ace-jump-buffer ac-racer ac-cider 4clojure)))
  '(safe-local-variable-values
    (quote
     ((company-clang-arguments "-I~/school/bachelor/mini")
