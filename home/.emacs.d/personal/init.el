@@ -52,6 +52,7 @@
 ;; Mode specifics
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 (load-file "~/.emacs.d/personal/company.el")
 ;(load-file "~/.emacs.d/personal/auto-complete.el")
@@ -78,6 +79,7 @@
 (load-file "~/.emacs.d/personal/js2.el")
 (load-file "~/.emacs.d/personal/emmet.el")
 (load-file "~/.emacs.d/personal/fsharp.el")
+(load-file "~/.emacs.d/personal/mu4e.el")
 
 ;; projectile
 (require 'projectile)

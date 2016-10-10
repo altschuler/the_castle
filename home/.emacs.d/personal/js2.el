@@ -9,4 +9,4 @@
 (js2-imenu-extras-setup)
 
 ;; tern
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+;(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
