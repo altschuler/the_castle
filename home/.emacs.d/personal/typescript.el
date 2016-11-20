@@ -2,16 +2,15 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (setq typescript-indent-level 4)
 
-;; sample config
-(add-hook 'typescript-mode-hook
-          (lambda ()
-            (tide-setup)
-            (flycheck-mode +1)
-            (setq flycheck-check-syntax-automatically '(save mode-enabled))
-            (eldoc-mode +1)
-            ;; company is an optional dependency. You have to
-            ;; install it separately via package-install
-            (company-mode-on)))
+;; ;; sample config
+;; (add-hook 'typescript-mode-hook
+;;           (lambda ()
+;;             (tide-setup)
+;;             (flycheck-mode +1)
+;;             (yas-minor-mode +1)
+;;             (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;;             (eldoc-mode +1)
+;;             (company-mode-on)))
 
 
 (defun ts-mode-map ()
@@ -25,6 +24,7 @@
   (interactive)
   (tide-setup)
   (flycheck-mode +1)
+  (yas-minor-mode +1)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   ;; company is an optional dependency. You have to

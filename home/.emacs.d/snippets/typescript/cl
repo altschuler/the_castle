@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+#name: !cl
+#key: !cl
+# --
+console.log("`yas/selected-text`$0:", `yas/selected-text`);

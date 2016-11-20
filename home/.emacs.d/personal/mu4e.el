@@ -57,7 +57,34 @@
                      ( mu4e-maildir-shortcuts       . (("/gmail/INBOX"               . ?i)
                                                        ("/gmail/[Gmail].Sent Mail"   . ?s)
                                                        ("/gmail/[Gmail].Trash"       . ?t)
-                                                       ("/gmail/[Gmail].All Mail"    . ?a)))))))
+                                                       ("/gmail/[Gmail].All Mail"    . ?a)))))
+         ,(make-mu4e-context
+           :name "Plotist"
+           :enter-func (lambda () (mu4e-message "Switch to the PLOTIST context"))
+           ;; leave-fun not defined
+           :match-func (lambda (msg)
+                         (when msg
+                           (or (mu4e-message-contact-field-matches msg
+                                                                   :to "saltschuler@plotist.com")
+                               (mu4e-message-contact-field-matches msg
+                                                                   :to "simon@plotist.com"))))
+           :vars '(  ( user-mail-address            . "simon@plotist.com" )
+                     ( user-full-name               . "Simon Altschuler" )
+
+                     ( smtpmail-default-smtp-server . "smtp.gmail.com" )
+                     ( smtpmail-smtp-server         . "smtp.gmail.com" )
+
+                     ( mu4e-drafts-folder           . "/gmail/[Gmail].Drafts" )
+                     ( mu4e-sent-folder             . "/gmail/[Gmail].Sent Mail" )
+                     ( mu4e-trash-folder            . "/gmail/[Gmail].Trash" )
+
+                     ( mu4e-sent-messages-behavior  . delete )
+
+                     ( mu4e-maildir-shortcuts       . (("/gmail/INBOX"               . ?i)
+                                                       ("/gmail/[Gmail].Sent Mail"   . ?s)
+                                                       ("/gmail/[Gmail].Trash"       . ?t)
+                                                       ("/gmail/[Gmail].All Mail"    . ?a)))))
+         ))
 
 
 
@@ -89,36 +116,58 @@
                                             "/gmail/INBOX"
                                             "/gmail/[Gmail].Sent Mail"
                                             "/gmail/[Gmail].Trash"
-                                            "/gmail/[Gmail].All Mail"))
+                                            "/gmail/[Gmail].All Mail"
+
+                                            "/plotist/INBOX"
+                                            "/plotist/[Gmail].Sent Mail"
+                                            "/plotist/[Gmail].Trash"
+                                            "/plotist/[Gmail].All Mail"))
 ;; Refiling
 
-;; (setq mu4e-refile-folder
-;;       (lambda (msg)
-;;         (cond
-;;          ;; messages to the mu mailing list go to the /mu folder
-;;          ((mu4e-message-contact-field-matches msg :to
-;;                                               "mu-discuss@googlegroups.com")
-;;           "/mu")
-;;          ;; messages sent directly to me go to /archive
-;;          ;; also `mu4e-user-mail-address-p' can be used
-;;          ((mu4e-message-contact-field-matches msg :to "me@example.com")
-;;           "/private")
-;;          ;; messages with football or soccer in the subject go to /football
-;;          ((string-match "football\\|soccer"
-;;                         (mu4e-message-field msg :subject))
-;;           "/football")
-;;          ;; messages sent by me go to the sent folder
-;;          ((find-if
-;;            (lambda (addr)
-;;              (mu4e-message-contact-field-matches msg :from addr))
-;;            mu4e-user-mail-address-list)
-;;           mu4e-sent-folder)
-;;          ;; everything else goes to /archive
-;;          ;; important to have a catch-all at the end!
-;;          (t  "/archive"))))
+
+
+(setq mu4e-refile-folder
+      (lambda (msg)
+        (cond
+
+         ;; messages with football or soccer in the subject go to /football
+         ((or (mu4e-message-contact-field-matches msg :from "GOG.com")
+              (mu4e-message-contact-field-matches msg :from "Humble Bundle")) "/altschuler/INBOX.Gaming")
+
+         ((or (mu4e-message-contact-field-matches msg :from "Egghead")) "/altschuler/INBOX.Programming")
+
+         ((or (mu4e-message-contact-field-matches msg :from "Spotify")
+              (mu4e-message-contact-field-matches msg :from "Songkick")) "/altschuler/INBOX.Music")
+
+         ((or (mu4e-message-contact-field-matches msg :from "Slack")
+              (string-match "Facebook" (mu4e-message-field msg :subject))
+              (string-match "LinkedIn" (mu4e-message-field msg :subject))) "/altschuler/INBOX.Social")
+
+         ((string-match "The Listserve"
+                        (mu4e-message-field msg :subject)) "/altschuler/INBOX.Listserve")
+
+         (t  "/archive"))))
 
 (require 'mu4e-alert)
 (mu4e-alert-set-default-style 'libnotify)
 (setq mu4e-alert-interesting-mail-query "flag:unread AND NOT flag:trashed")
 
 (mu4e-alert-enable-notifications)
+
+;; Attach files using dired
+(require 'gnus-dired)
+;; make the `gnus-dired-mail-buffers' function also work on
+;; message-mode derived modes, such as mu4e-compose-mode
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
