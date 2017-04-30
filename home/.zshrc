@@ -2,6 +2,7 @@
 EDITOR="emacs"
 GTAGSCONF="$HOME/.globalrc"
 GTAGSLABEL="ctags"
+BROWSER="google-chrome-stable"
 
 # path setup
 paths=(
@@ -12,15 +13,13 @@ paths=(
     /sbin
     /bin
     /home/simon/.cabal/bin
-    /opt/android-sdk/tools
-    /home/simon/.gem/ruby/2.2.0/bin
+    /home/simon/.cargo/bin
+    /home/simon/.gem/ruby/2.3.0/bin
     /usr/local/heroku/bin
     /home/simon/dev/calc/bin
     /home/simon/.local/bin
     /home/simon/opt/android-sdk-linux/tools
     /home/simon/apps/webstorm/bin
-    /home/simon/.cargo/bin
-    /home/simon/.gem/ruby/2.3.0/bin
 )
 source ~/.zsh/paths.zsh
 

@@ -138,5 +138,5 @@ function vol() {
 
 # vpn
 function vpn() {
-    sudo openvpn /etc/openvpn/$1.nordvpn.com.tcp443.ovpn
+    sudo openvpn /etc/openvpn/client/$1.nordvpn.com.tcp443.ovpn
 }
