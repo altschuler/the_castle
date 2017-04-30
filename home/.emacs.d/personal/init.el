@@ -43,11 +43,17 @@
 
 (delete-selection-mode t)
 (show-paren-mode t)
-(setq make-backup-files nil)
+
 (setq message-kill-buffer-on-exit t)
 (scroll-bar-mode 0)
 (global-hl-line-mode -1)
 (setq sp-autoescape-string-quote nil)
+
+(setq backup-by-copying t)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; Mode specifics
 
@@ -62,7 +68,7 @@
 (load-file "~/.emacs.d/personal/ggtags.el")
 (load-file "~/.emacs.d/personal/c.el")
 ;;(load-file "~/.emacs.d/personal/ruby.el")
-;;(load-file "~/.emacs.d/personal/yasnippet.el")
+(load-file "~/.emacs.d/personal/yasnippet.el")
 (load-file "~/.emacs.d/personal/haskell.el")
 (load-file "~/.emacs.d/personal/scss.el")
 (load-file "~/.emacs.d/personal/tex.el")
@@ -74,12 +80,15 @@
 (load-file "~/.emacs.d/personal/eshell.el")
 ;;(load-file "~/.emacs.d/personal/go.el")
 (load-file "~/.emacs.d/personal/org.el")
+(load-file "~/.emacs.d/personal/javascript.el")
 (load-file "~/.emacs.d/personal/typescript.el")
 ;;(load-file "~/.emacs.d/personal/stack.el")
 (load-file "~/.emacs.d/personal/js2.el")
 (load-file "~/.emacs.d/personal/emmet.el")
 (load-file "~/.emacs.d/personal/fsharp.el")
+(load-file "~/.emacs.d/personal/clojure.el")
 (load-file "~/.emacs.d/personal/mu4e.el")
+(load-file "~/.emacs.d/personal/editorconfig.el")
 
 ;; projectile
 (require 'projectile)
@@ -96,3 +105,8 @@
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . paredit-mode))
 (add-to-list 'auto-mode-alist '("\\.amb\\'" . hexl-mode))
 ;(add-to-list 'auto-mode-alist '("\\.el\\'" . paredit-mode))
+
+(setq inhibit-splash-screen t)
+(require 'bookmark)
+(bookmark-bmenu-list)
+(switch-to-buffer "*Bookmark List*")

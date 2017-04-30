@@ -9,4 +9,6 @@
 (js2-imenu-extras-setup)
 
 ;; tern
-;(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(add-to-list 'company-backends 'company-tern)
+(setq company-tern-meta-as-single-line t)

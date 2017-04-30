@@ -6,7 +6,8 @@
 (setq mu4e-maildir "~/Maildir"
       smtpmail-stream-type 'starttls
       message-send-mail-function 'smtpmail-send-it
-      smtpmail-smtp-service 587 )
+      smtpmail-smtp-service 587
+      mu4e-compose-keep-self-cc nil)
 
 ;; Contexts
 
