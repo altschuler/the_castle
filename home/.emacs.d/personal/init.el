@@ -22,6 +22,8 @@
 (global-set-key (kbd "M-s-p")     '(lambda () (interactive) (shrink-window 1)))
 (global-set-key (kbd "M-s-f")     '(lambda () (interactive) (shrink-window-horizontally -1)))
 (global-set-key (kbd "M-s-b")     '(lambda () (interactive) (shrink-window-horizontally 1)))
+(global-set-key (kbd "C-c C-p C-r")     'sp-rewrap-sexp)
+(global-set-key (kbd "C-c C-p r")     'sp-raise-sexp)
 
 ;; Config
 
@@ -63,7 +65,7 @@
 (load-file "~/.emacs.d/personal/company.el")
 ;(load-file "~/.emacs.d/personal/auto-complete.el")
 (load-file "~/.emacs.d/personal/neotree.el")
-(load-file "~/.emacs.d/personal/rust-setup.el")
+;; (load-file "~/.emacs.d/personal/rust-setup.el")
 (load-file "~/.emacs.d/personal/helm.el")
 (load-file "~/.emacs.d/personal/ggtags.el")
 (load-file "~/.emacs.d/personal/c.el")
@@ -75,17 +77,16 @@
 (load-file "~/.emacs.d/personal/dired.el")
 ;;(load-file "~/.emacs.d/personal/erc.el")
 (load-file "~/.emacs.d/personal/flycheck.el")
-(load-file "~/.emacs.d/personal/python.el")
+;; (load-file "~/.emacs.d/personal/python.el")
 ;;(load-file "~/.emacs.d/personal/csharp.el")
 (load-file "~/.emacs.d/personal/eshell.el")
 ;;(load-file "~/.emacs.d/personal/go.el")
 (load-file "~/.emacs.d/personal/org.el")
-(load-file "~/.emacs.d/personal/javascript.el")
 (load-file "~/.emacs.d/personal/typescript.el")
 ;;(load-file "~/.emacs.d/personal/stack.el")
 (load-file "~/.emacs.d/personal/js2.el")
 (load-file "~/.emacs.d/personal/emmet.el")
-(load-file "~/.emacs.d/personal/fsharp.el")
+;; (load-file "~/.emacs.d/personal/fsharp.el")
 (load-file "~/.emacs.d/personal/clojure.el")
 (load-file "~/.emacs.d/personal/mu4e.el")
 (load-file "~/.emacs.d/personal/editorconfig.el")
@@ -110,3 +111,10 @@
 (require 'bookmark)
 (bookmark-bmenu-list)
 (switch-to-buffer "*Bookmark List*")
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(tslint "ERROR: \(.*\)\[\([0-9]+\), \([0-9]+\).*"
+                      1 ;; file
+                      2 ;; line
+                      3 ;; column
+                      ))

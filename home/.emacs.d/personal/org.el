@@ -2,6 +2,7 @@
 (setq org-directory "~/org")
 (setq org-mobile-directory "/simon@4be.dk#1337:/home/simon/org")
 (setq org-mobile-inbox-for-pull (concat org-directory "/index.org"))
+(setq org-src-fontify-natively t)
 
 (setq org-mobile-files (list
                         "~/org/todo.org"

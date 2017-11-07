@@ -21,8 +21,7 @@ function _wd() {
   do
     arr=(${(s,:,)line})
     key=${arr[1]}
-    val=${arr[2]}
-
+    val=${arr[2]/\~/$HOME}
     points[$key]=$val
   done < $CONFIG
 

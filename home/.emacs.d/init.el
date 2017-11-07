@@ -124,12 +124,14 @@ by Prelude.")
  '(android-mode-sdk-dir "~/opt/android-sdk-linux")
  '(haskell-tags-on-save t)
  '(jedi:environment-virtualenv nil)
+ '(js-switch-indent-offset 4)
  '(js2-strict-trailing-comma-warning nil)
+ '(js2r-prefered-quote-type 2)
  '(neo-window-width 30)
  '(org-agenda-files (quote ("~/org/energy.org" "~/org/todo.org")))
  '(package-selected-packages
    (quote
-    (slack cider clojure-cheatsheet flycheck-clojure aggressive-indent ng2-mode company-tern tern sass-mode yaml-mode flycheck typescript-mode all-the-icons mu4e-alert mu4e-maildirs-extension eslint-fix coffee-mode handlebars-sgml-mode editorconfig zenburn-theme volatile-highlights undo-tree tss toml-mode tide sws-mode smex smartparens scss-mode scala-mode2 rudel robe restclient rainbow-mode python-environment pony-mode pkgbuild-mode paredit omnisharp neotree markdown-mode+ magit less-css-mode key-chord jsx-mode js2-refactor jade-mode ido-ubiquitous icicles helm-themes helm-swoop helm-spotify helm-projectile-all helm-projectile helm-make helm-gtags helm-company helm-anything helm-ag haskell-mode handlebars-mode guru-mode grizzl gotest golint go-snippets go-autocomplete gitignore-mode gitconfig-mode gist ggtags function-args fsharp-mode flymake-rust flycheck-rust flycheck-hdevtools flx-ido expand-region ess erc-image epc emmet-mode elisp-slime-nav dired-filter dired-details+ dired+ diminish d-mode csv-mode company-c-headers clojure-snippets clojure-mode-extra-font-locking cargo bookmark+ bison-mode auto-complete-rst auto-complete-clang auctex-latexmk android-mode ace-jump-mode ace-jump-buffer ac-racer ac-cider 4clojure)))
+    (prettier-js web-mode folding graphql-mode slack cider clojure-cheatsheet flycheck-clojure aggressive-indent ng2-mode company-tern tern sass-mode yaml-mode flycheck typescript-mode all-the-icons mu4e-alert mu4e-maildirs-extension eslint-fix coffee-mode handlebars-sgml-mode editorconfig zenburn-theme volatile-highlights undo-tree tss toml-mode tide sws-mode smex smartparens scss-mode scala-mode2 rudel robe restclient rainbow-mode python-environment pony-mode pkgbuild-mode paredit omnisharp neotree markdown-mode+ magit less-css-mode key-chord jsx-mode js2-refactor jade-mode ido-ubiquitous icicles helm-themes helm-swoop helm-spotify helm-projectile-all helm-projectile helm-make helm-gtags helm-company helm-anything helm-ag haskell-mode handlebars-mode guru-mode grizzl gotest golint go-snippets go-autocomplete gitignore-mode gitconfig-mode gist ggtags function-args fsharp-mode flymake-rust flycheck-rust flycheck-hdevtools flx-ido expand-region ess erc-image epc emmet-mode elisp-slime-nav dired-filter dired-details+ dired+ diminish d-mode csv-mode company-c-headers clojure-snippets clojure-mode-extra-font-locking cargo bookmark+ bison-mode auto-complete-rst auto-complete-clang auctex-latexmk android-mode ace-jump-mode ace-jump-buffer ac-racer ac-cider 4clojure)))
  '(safe-local-variable-values
    (quote
     ((company-clang-arguments "-I~/school/bachelor/mini")

@@ -7,7 +7,8 @@
       smtpmail-stream-type 'starttls
       message-send-mail-function 'smtpmail-send-it
       smtpmail-smtp-service 587
-      mu4e-compose-keep-self-cc nil)
+      mu4e-compose-keep-self-cc nil
+      mu4e-view-show-addresses t)
 
 ;; Contexts
 

@@ -12,9 +12,11 @@ paths=(
     /usr/bin
     /sbin
     /bin
+    /usr/bin/core_perl
     /home/simon/.cabal/bin
     /home/simon/.cargo/bin
     /home/simon/.gem/ruby/2.3.0/bin
+    /home/simon/.gem/ruby/2.4.0/bin
     /usr/local/heroku/bin
     /home/simon/dev/calc/bin
     /home/simon/.local/bin
@@ -109,3 +111,5 @@ elif type compctl &>/dev/null; then
   compctl -K _ng_completion ng
 fi
 ###-end-ng-completion###
+
+export PATH="$HOME/.yarn/bin:$PATH"
