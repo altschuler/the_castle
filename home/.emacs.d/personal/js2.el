@@ -16,6 +16,8 @@
 ;; prettier formatting
 (require 'prettier-js)
 (add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-mode-hook 'prettier-js-mode)
+(add-hook 'json-mode-hook 'prettier-js-mode)
 (setq prettier-js-args '(
                          "--trailing-comma" "all"
                          "--tab-width" "4"

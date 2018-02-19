@@ -34,6 +34,7 @@
   ;; (if (file-exists-p "node_modules")
   (setq tide-hl-identifier-mode t)
   (setq tide-tsserver-process-environment '("TSS_LOG=-level verbose -file /tmp/tss.log"))
+  (remove-hook 'before-save-hook 'tide-format-before-save)
   ;; company is an optional dependency. You have to
   ;; install it separately via package-install
   ;; `M-x package-install [ret] company`
@@ -44,7 +45,7 @@
 (setq company-tooltip-align-annotations t)
 
 ;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
+                                        ; (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 ;; tide
