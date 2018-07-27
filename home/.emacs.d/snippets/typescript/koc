@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-#name: !koc
-#key: !koc
-# --
-KnockoutComputed<$0>

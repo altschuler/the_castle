@@ -1,22 +1,15 @@
-[alias]
-	st = status
-	ch = checkout
-	cm = commit
-	cmm = commit -m
-    pro = pull --rebase origin
-	po = push origin
-	rmall = ls-files -z --deleted | xargs -0 git rm
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[core]
+	autocrlf = input
+	whitespace = trailing-space, space-before-tab
+	editor = emacs
 [user]
 	name = Simon Altschuler
 	email = simon@altschuler.dk
+	signingkey = F7F3EB1D6431910C
 [color]
 	ui = auto
 [push]
 	default = current
-[core]
-	whitespace = trailing-space, space-before-tab
-	editor = emacs
 [apply]
 	whitespace = fix
 [magit]

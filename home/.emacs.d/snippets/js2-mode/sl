@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-#name: sl
-#key: sl
-# --
-self.$1 = $0;

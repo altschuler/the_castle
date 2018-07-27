@@ -33,12 +33,19 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(react
+     windows-scripts
+     sql
+     ;; lsp
+     python
+     csv
+     elm
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     docker
      ruby
      yaml
      javascript
@@ -52,10 +59,15 @@ This function should only modify configuration layer settings."
      markdown
      org
      csharp
+     ;; racket
+     spotify
      (mu4e :variables
            mu4e-enable-notifications t
            mu4e-enable-mode-line t
-           mu4e-use-maildirs-extension t)
+           mu4e-use-maildirs-extension t
+           mu4e-compose-keep-self-cc nil
+           mu4e-compose-dont-reply-to-self t
+           mu4e-user-mail-address-list '("simon@altschuler.dk" "altschuleren@gmail.com" "simon.altschuler@groupm.com"))
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -434,12 +446,31 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
 
+(defun my-setup-indent (n)
+  ;; java/c/c++
+  (setq c-basic-offset n)
+  ;; web development
+  (setq coffee-tab-width n) ; coffeescript
+  (setq javascript-indent-level n) ; javascript-mode
+  (setq js-indent-level n) ; js-mode
+  (setq js2-basic-offset n) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
+  (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
+  (setq web-mode-css-indent-offset n) ; web-mode, css in html file
+  (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
+  (setq css-indent-offset n) ; css-mode
+  )
+
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (setq configuration-layer-elpa-archives
+        '(("melpa" . "melpa.org/packages/")
+          ("org" . "orgmode.org/elpa/")
+          ("gnu" . "elpa.gnu.org/packages/")))
+  (my-setup-indent 4)
   )
 
 (defun dotspacemacs/user-config ()
@@ -450,13 +481,15 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (global-flycheck-mode t)
-  (setq neo-hidden-regexp-list '("\\.meta$" "^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$"))
+
+  (setq neo-hidden-regexp-list '("\\.meta$" "^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$")
+        neo-window-width 35)
   (setq prettier-js-args '(
                            "--trailing-comma" "all"
                            "--tab-width" "4"
                            "--single-quote" "true"
                            ))
-  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'typescript-mode-hook 'prettier-js-mode)
   (setq evil-cross-lines t)
 
@@ -468,6 +501,8 @@ you should place your code here."
            "* %?\n%U\n" :clock-in t :clock-resume t)
           ("a" "appointment" entry (file+headline "todo.org" "Appointments")
            "* APPT %^{Title}\nSCHEDULED: %^T\n%?" :clock-in t :clock-resume t)
+          ("b" "brain" entry (file+headline "brain/brain.org" "All")
+           "* %^{Title}\n%?")
           ("w" "work todo" entry (file+headline "todo.org" "Work")
            "* TODO %^{Title} %^G\n%U\n%^{Description}\n" :clock-in t :clock-resume t)))
   (setq org-agenda-files '("~/org/todo.org"))
@@ -500,7 +535,6 @@ you should place your code here."
         mu4e-get-mail-command "mbsync -a"
         mu4e-update-interval 300
         mu4e-compose-signature-auto-include nil
-        mu4e-compose-keep-self-cc nil
         mu4e-view-show-images t
         mu4e-view-show-addresses t
         mu4e-context-policy 'pick-first
@@ -519,14 +553,18 @@ you should place your code here."
 
         mu4e-maildirs-extension-custom-list
         '("/altschuler/Inbox"
-          "/altschuler/Inbox.Sent"
-          "/altschuler/Inbox.Drafts"
-          "/altschuler/Inbox.Trash"
+          ;; "/altschuler/Inbox.Sent"
+          ;; "/altschuler/Inbox.Drafts"
+          ;; "/altschuler/Inbox.Trash"
 
           "/gmail/Inbox"
-          "/gmail/[Gmail].Sent Mail"
-          "/gmail/[Gmail].Trash"
-          "/gmail/[Gmail].All Mail")
+          ;; "/gmail/[Gmail].Sent Mail"
+          ;; "/gmail/[Gmail].Trash"
+          ;; "/gmail/[Gmail].All Mail"
+
+          "/groupm/Inbox"
+          ;; "/Groupm/Inbox.Drafts"
+          )
 
         mu4e-bookmarks
         `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
@@ -567,6 +605,27 @@ you should place your code here."
                       ;;                           "Alice Derleth\n"
                       ;;                           "Lauttasaari, Finland\n"))
                       ))
+
+           ,(make-mu4e-context
+             :name "GroupM"
+             :enter-func (lambda () (mu4e-message "Switched to GroupM context"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/GroupM" (mu4e-message-field msg :maildir))))
+             :vars '( (user-mail-address            . "simon.altschuler@groupm.com")
+                      (user-full-name               . "Simon Altschuler")
+                      (mu4e-trash-folder            . "/groupm/Trash")
+                      (mu4e-drafts-folder           . "/groupm/Drafts")
+                      (mu4e-sent-folder             . "/groupm/Sent")
+                      (mu4e-sent-messages-behavior  . sent)
+                      (smtpmail-default-smtp-server . "smtp.office365.com")
+                      (smtpmail-smtp-server         . "smtp.office365.com")
+                      ;; ( mu4e-compose-signature .
+                      ;;                          (concat
+                      ;;                           "Alice Derleth\n"
+                      ;;                           "Lauttasaari, Finland\n"))
+                      ))
+
 
            ,(make-mu4e-context
              :name "Gmail"
@@ -622,7 +681,7 @@ you should place your code here."
 
   ;; Enable Desktop notifications
   (with-eval-after-load 'mu4e-alert
-    (mu4e-alert-set-default-style 'notifications))
+    (mu4e-alert-set-default-style 'libnotify))
 
   ;; (defun astyle-format-before-save ()
   ;;   (when (eq major-mode 'csharp-mode)
@@ -644,7 +703,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode mu4e-maildirs-extension mu4e-alert ht omnisharp shut-up magithub ghub+ apiwrap ghub csharp-mode org-category-capture smartparens iedit anzu evil goto-chg undo-tree highlight f s company-web dash bind-map packed helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data unfill org-projectile org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode htmlize gnuplot gh-md flyspell-correct-helm flyspell-correct auto-dictionary smeargle orgit magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flycheck-pos-tip pos-tip evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete tide typescript-mode flycheck ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (racket-mode faceup sql-indent yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic csv-mode spotify helm-spotify-plus multi yaml-mode xterm-color shell-pop rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake prettier-js org-mime multi-term minitest graphql-mode let-alist eshell-z eshell-prompt-extras esh-help chruby bundler inf-ruby web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode mu4e-maildirs-extension mu4e-alert ht omnisharp shut-up magithub ghub+ apiwrap ghub csharp-mode org-category-capture smartparens iedit anzu evil goto-chg undo-tree highlight f s company-web dash bind-map packed helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data unfill org-projectile org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode htmlize gnuplot gh-md flyspell-correct-helm flyspell-correct auto-dictionary smeargle orgit magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flycheck-pos-tip pos-tip evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete tide typescript-mode flycheck ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -663,7 +722,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (prettier-js web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode mu4e-maildirs-extension mu4e-alert ht omnisharp shut-up magithub ghub+ apiwrap ghub csharp-mode org-category-capture smartparens iedit anzu evil goto-chg undo-tree highlight f s company-web dash bind-map packed helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data unfill org-projectile org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode htmlize gnuplot gh-md flyspell-correct-helm flyspell-correct auto-dictionary smeargle orgit magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flycheck-pos-tip pos-tip evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete tide typescript-mode flycheck ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (ivy racket-mode faceup sql-indent yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic csv-mode spotify helm-spotify-plus multi yaml-mode xterm-color shell-pop rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake prettier-js org-mime multi-term minitest graphql-mode let-alist eshell-z eshell-prompt-extras esh-help chruby bundler inf-ruby web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode mu4e-maildirs-extension mu4e-alert ht omnisharp shut-up magithub ghub+ apiwrap ghub csharp-mode org-category-capture smartparens iedit anzu evil goto-chg undo-tree highlight f s company-web dash bind-map packed helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data unfill org-projectile org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode htmlize gnuplot gh-md flyspell-correct-helm flyspell-correct auto-dictionary smeargle orgit magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flycheck-pos-tip pos-tip evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete tide typescript-mode flycheck ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

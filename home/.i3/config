@@ -53,8 +53,8 @@ bindsym $mod+Shift+Ctrl+b move workspace to output left
 bindsym $mod+Shift+Ctrl+f move workspace to output right
 
 # audio keys
-bindsym XF86AudioRaiseVolume exec amixer -c 1 set Master 5%+ && killall -USR1 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -c 1 set Master 5%- && killall -USR1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -c 1 set Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -c 1 set Master 5%- && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMute exec amixer -c 1 set Master 0% && killall -USR1 i3blocks
 
 # brightness
@@ -150,9 +150,12 @@ bindsym $mod+r mode "resize"
 
 # status bar
 bar {
+    # status_command i3blocks
     status_command i3blocks -c ~/.i3/i3blocks.conf
     font pango:SourceCodePro, FontAwesome 10
 }
 
 # startups
 exec xflux -l 55.678649 -g 12.531597
+exec nm-applet
+exec --no-startup-id dunst

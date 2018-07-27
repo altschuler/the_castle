@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-#name: koba
-#key: koba
-# --
-ko.observableArray($0)
